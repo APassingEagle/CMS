@@ -28,10 +28,12 @@ export default class ManageStock extends React.Component {
         }
 
         this.addNewStockRef = React.createRef();
+
+        this._onLoad = this._onLoad.bind(this);
     }
 
     componentDidMount() {
-        store.addChangeListener(this._onLoad);
+        store.addEventListener("fetchStock", this._onLoad);
 
         action.fetchStock({
             currentPage: this.state.CurrentPage,
@@ -44,13 +46,11 @@ export default class ManageStock extends React.Component {
     }
 
     render() {
-        // const stocks = this.state.Records.map((item, index) => {
-        //     return (
-        //         <>
-        //             <StockCard record={item} />
-        //         </>
-        //     );
-        // });
+        const stocks = this.state.Records.map((item, index) => {
+            return (
+                <StockCard record={item} />
+            );
+        });
 
         return (
             <>
@@ -67,11 +67,7 @@ export default class ManageStock extends React.Component {
                         <CreateStockModal ref={this.addNewStockRef} />
                     </div>
                     <div className='stock-list'>
-                        {/* {stocks} */}
-                        <StockCard />
-                        <StockCard />
-                        <StockCard />
-                        <StockCard />
+                        {stocks}
                     </div>
 
                     <Pagination className='pager' count={5} variant="outlined" color="primary" size='large' />
@@ -90,12 +86,13 @@ export default class ManageStock extends React.Component {
         this.addNewStockRef.current.showModal();
     }
 
-    _onLoad() {
+    _onLoad = () => {
         this.setState({
             Records: store.getRecords(),
             CurrentPage: store.getCurrentPage(),
             SearchText: store.getSearchText(),
             PageCount: store.getPageCount(),
         });
+
     };
 }

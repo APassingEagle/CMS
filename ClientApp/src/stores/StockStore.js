@@ -39,8 +39,6 @@ class StockStore extends EventEmitter {
 	getSearchText = () => _searchText;
 	getRecords = () => _records;
 	getRecord = () => _record;
-	getSaveMessage = () => _saveMessage;
-	isSaveSuccessful = () => _isSaveSuccessful;
 
 	dispatcherCallBack(payload) {
 
@@ -52,7 +50,7 @@ class StockStore extends EventEmitter {
 				_currentPage = payload.currentPage;
 				_searchText = payload.searchText;
 
-				this.emitChange();
+				this.emit("fetchStock");
 				break;
 
 			case StockConstants._.VIEW_STOCK:

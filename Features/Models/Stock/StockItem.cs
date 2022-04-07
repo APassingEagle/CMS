@@ -25,6 +25,5 @@ namespace CMS.Features.Models.Stock
 
         public virtual ICollection<StockAccessory> StockAccessories { get; set; }
         public virtual ICollection<StockImage> StockImages { get; set; }
-
     }
 }

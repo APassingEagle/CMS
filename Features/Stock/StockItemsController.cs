@@ -22,11 +22,18 @@ namespace CMS.Features.Stock
             _mediator = mediator;
         }
 
-		public async Task<IActionResult> FetchStock(Index.Query query)
-		{
-			var result = await _mediator.Send(query);
-			return Json(result);
-		}
+        public async Task<IActionResult> FetchStock(Index.Query query)
+        {
+            var result = await _mediator.Send(query);
+            return Json(result);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Create(Create.Command stockItem)
+        {
+            var result = await _mediator.Send(stockItem);
+            return Json("Success");
+        }
 
         // GET: StockItems/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -43,26 +50,6 @@ namespace CMS.Features.Stock
                 return NotFound();
             }
 
-            return View(stockItem);
-        }
-
-        // GET: StockItems/Create
-        public IActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: StockItems/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(StockItem stockItem)
-        {
-            if (ModelState.IsValid)
-            {
-                _context.Add(stockItem);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
             return View(stockItem);
         }
 

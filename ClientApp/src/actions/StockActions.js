@@ -8,44 +8,52 @@ class StockActions {
 		api.fetchStock(request).then((response) => {
 
 			Dispatcher.dispatch({
-				actionType: StockConstants._.VIEW_STOCK,
-				records: response.Records,
-				pageCount: response.PageCount,
-				currentPage: response.CurrentPage,
-				searchText: response.SearchText,
+				actionType: StockConstants._.LOAD_STOCK,
+				records: response.items,
+				pageCount: response.pageCount,
+				currentPage: response.currentPage,
+				searchText: response.searchText,
 			});
 		});
 	}
+	createStock(stockItem) {
 
-	createStock() {
-
-		api.createStock().then((response) => {
+		api.createStock(stockItem).then((response) => {
 
 			Dispatcher.dispatch({
 				actionType: StockConstants._.CREATE_STOCK
 			});
 		});
 	}
-
 	viewStock(id) {
 
 		api.viewStock(id).then((response) => {
 
 			Dispatcher.dispatch({
 				actionType: StockConstants._.VIEW_STOCK,
-				record: response.Record
+				record: response.item
 			});
 		});
 	}
-
 	updateStock(record) {
 
 		api.updateStock(record).then((response) => {
 
 			Dispatcher.dispatch({
 				actionType: StockConstants._.UPDATE_STOCK,
-				hasSucceeded: response.HasSucceeded,
-				saveMessage: response.Message
+				hasSucceeded: response.hasSucceeded,
+				saveMessage: response.message
+			});
+		});
+	}
+	deleteStock(id) {
+
+		api.deleteStock(id).then((response) => {
+
+			Dispatcher.dispatch({
+				actionType: StockConstants._.DELETE_STOCK,
+				hasSucceeded: response.hasSucceeded,
+				saveMessage: response.message
 			});
 		});
 	}

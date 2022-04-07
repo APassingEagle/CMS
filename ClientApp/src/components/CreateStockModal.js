@@ -47,48 +47,73 @@ export default class CreateStockModal extends React.Component {
                     <Grid container spacing={2}>
                         <Grid item xs={6}>
                             <FormControl>
-                                <TextField label="Make" />
+                                <TextField label="Make"
+                                    name='Make'
+                                    onBlur={this.handleTextChange.bind(this)}
+                                />
                             </FormControl>
                         </Grid>
                         <Grid item xs={6}>
                             <FormControl>
-                                <TextField label="Model" />
+                                <TextField label="Model"
+                                    name='Model'
+                                    onBlur={this.handleTextChange.bind(this)}
+                                />
                             </FormControl>
                         </Grid>
                     </Grid>
                     <Grid container spacing={3}>
                         <Grid item xs={3}>
                             <FormControl>
-                                <TextField label="Model Year" />
+                                <TextField label="Model Year"
+                                    name='ModelYear'
+                                    onBlur={this.handleTextChange.bind(this)}
+                                />
                             </FormControl>
                         </Grid>
                         <Grid item xs={6}>
                             <FormControl>
-                                <TextField label="Current Kilometer Reading" />
+                                <TextField label="Current Kilometer Reading"
+                                    name='CurrentKilometerReading'
+                                    onBlur={this.handleTextChange.bind(this)}
+                                />
                             </FormControl>
                         </Grid>
                         <Grid item xs={3}>
                             <FormControl>
-                                <TextField label="Colour" />
+                                <TextField label="Colour"
+                                    name='Colour'
+                                    onBlur={this.handleTextChange.bind(this)}
+                                />
                             </FormControl>
                         </Grid>
                     </Grid>
                     <Grid container spacing={1}>
                         <Grid item xs={12}>
                             <FormControl>
-                                <TextField label="VIN" />
+                                <TextField label="VIN"
+                                    name='VIN'
+                                    onBlur={this.handleTextChange.bind(this)}
+                                />
                             </FormControl>
                         </Grid>
                     </Grid>
                     <Grid container spacing={2}>
                         <Grid item xs={6}>
                             <FormControl>
-                                <TextField label="Retail Price" />
+                                <TextField label="Retail Price"
+                                    type='number'
+                                    name='RetailPrice'
+                                    onBlur={this.handleTextChange.bind(this)}
+                                />
                             </FormControl>
                         </Grid>
                         <Grid item xs={6}>
                             <FormControl>
-                                <TextField label="Cost Price" />
+                                <TextField label="Cost Price"
+                                    type='number'
+                                    name='CostPrice'
+                                    onBlur={this.handleTextChange.bind(this)} />
                             </FormControl>
                         </Grid>
                     </Grid>
@@ -103,20 +128,20 @@ export default class CreateStockModal extends React.Component {
 
     createStock = () => {
 
-        const record = {
-            ["Record.Make"]: this.state.Make,
-            ["Record.Model"]: this.state.Model,
-            ["Record.ModelYear"]: this.state.ModelYear,
-            ["Record.CurrentKilometerReading"]: this.state.CurrentKilometerReading,
-            ["Record.Colour"]: this.state.Colour,
-            ["Record.VIN"]: this.state.VIN,
-            ["Record.RetailPrice"]: this.state.RetailPrice,
-            ["Record.CostPrice"]: this.state.CostPrice
+        const stockItem = {
+            ["StockItem.Make"]: this.state.Make,
+            ["StockItem.Model"]: this.state.Model,
+            ["StockItem.ModelYear"]: this.state.ModelYear,
+            ["StockItem.CurrentKilometerReading"]: this.state.CurrentKilometerReading,
+            ["StockItem.Colour"]: this.state.Colour,
+            ["StockItem.VIN"]: this.state.VIN,
+            ["StockItem.RetailPrice"]: this.state.RetailPrice,
+            ["StockItem.CostPrice"]: this.state.CostPrice
         };
 
-        action.createStock(record);
+        action.createStock(stockItem);
 
-        this.closeModal();
+        // this.closeModal();
     };
 
     showModal = () => {
@@ -133,6 +158,12 @@ export default class CreateStockModal extends React.Component {
         this.setState({
             ShowModal: false
         })
+    }
+
+    handleTextChange(e) {
+        this.setState({
+            [e.target.name]: e.target.value,
+        });
     }
 
     _onRecordSave = () => {

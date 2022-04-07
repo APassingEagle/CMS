@@ -11,7 +11,6 @@ class StockApi {
 			}).then((result) => resolve(result));
 		});
 	};
-
 	viewStock = (id) => {
 		
 		return new Promise(function (resolve, reject) {
@@ -22,19 +21,17 @@ class StockApi {
 			.then((result) => resolve(result));
 		});
 	};
-
-	createStock = (record) => {
+	createStock = (stockItem) => {
 		
 		return new Promise(function (resolve, reject) {
 
 			api.post({
 				url: '/StockItems/Create',
-				data: record
+				data: stockItem
 			})
 			.then((result) => resolve(result));
 		});
 	};
-
 	updateStock = (record) => {
 		
 		return new Promise(function (resolve, reject) {
@@ -46,6 +43,59 @@ class StockApi {
 			.then((result) => resolve(result));
 		});
 	};
+	deleteStock = (id) => {
+		
+		return new Promise(function (resolve, reject) {
+
+			api.put({
+				url: `/StockItems/Delete${id}`,
+				data: record
+			})
+			.then((result) => resolve(result));
+		});
+	};
+
+
+	createImage = (record) => {
+		return new Promise(function (resolve, reject) {
+
+			api.post({
+				url: '/StockImages/CreateImage',
+				data: record
+			})
+			.then((result) => resolve(result));
+		});
+	};
+	deleteImage = (id) => {
+		return new Promise(function (resolve, reject) {
+
+			api.post({
+				url: `/StockImages/DeleteImage/${id}`
+			})
+			.then((result) => resolve(result));
+		});
+	};
+
+	createAccessory = (record) => {
+		return new Promise(function (resolve, reject) {
+
+			api.post({
+				url: '/StockAccessories/CreateAccessory',
+				data: record
+			})
+			.then((result) => resolve(result));
+		});
+	};
+	deleteAccessory = (id) => {
+		return new Promise(function (resolve, reject) {
+
+			api.post({
+				url: `/StockAccessories/DeleteAccessory/${id}`
+			})
+			.then((result) => resolve(result));
+		});
+	};
+
 }
 
 export default new StockApi();
