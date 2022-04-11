@@ -23,26 +23,22 @@ namespace CMS.Features.Stock
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateAccessory(StockAccessory accessory)
+        public async Task<IActionResult> CreateAccessory(CreateAccessory.Command command)
         {
-            var result = await _mediator.Send(accessory);
-            return Json("Success");
+            var result = await _mediator.Send(command);
+            return Json(result);
         }
 
+        [HttpDelete]
         public async Task<IActionResult> DeleteAccessory(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
             var accessory = await _context.StockAccessories
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (accessory == null)
-            {
-                return NotFound();
-            }
+                .FirstOrDefaultAsync(x => x.Id == id);
 
+            _context.StockAccessories.Remove(accessory);
+
+            await _context.SaveChangesAsync();
+            
             return Json("Success");
         }
     }

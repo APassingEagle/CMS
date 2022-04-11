@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace CMS.Features.Models.Stock
 {
@@ -12,14 +13,22 @@ namespace CMS.Features.Models.Stock
         }
 
         public int Id { get; set; }
+
+        [DisplayFormat(ConvertEmptyStringToNull = false)]
         public string Make { get; set; }
+
+        [DisplayFormat(ConvertEmptyStringToNull = false)]
         public string Model { get; set; }
         public int? ModelYear { get; set; }
         public int? CurrentKilometerReading { get; set; }
+
+        [DisplayFormat(ConvertEmptyStringToNull = false)]
         public string Colour { get; set; }
+
+        [DisplayFormat(ConvertEmptyStringToNull = false)]
         public string Vin { get; set; }
-        public double? RetailPrice { get; set; }
-        public double? CostPrice { get; set; }
+        public decimal? RetailPrice { get; set; }
+        public decimal? CostPrice { get; set; }
         public DateTime DateCreated { get; set; }
         public DateTime? DateUpdated { get; set; }
 

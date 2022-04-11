@@ -13,20 +13,20 @@ namespace CMS.Features.Stock
 {
 	public class CreateImage
 	{
-		public class Query : IRequest<Response>
+		public class Command : IRequest<Response>
 		{
             public StockImage Image { get; set; }
         }
 
 		public class Response
 		{
-			public bool Success { get; set; }
+			public bool HasSucceeded { get; set; }
+            public string Message { get; set; }
 		}
 
-		public class QueryHandler : IRequestHandler<Query, Response>
+		public class QueryHandler : IRequestHandler<Command, Response>
 		{
 			private readonly CMSContext _dbContext;
-			private const int PageSize = 5;
 
 			public QueryHandler(
 				CMSContext dbContext)
@@ -34,14 +34,17 @@ namespace CMS.Features.Stock
 				_dbContext = dbContext;
 			}
 
-			public async Task<Response> Handle(Query request, CancellationToken cancellationToken)
+			public async Task<Response> Handle(Command request, CancellationToken cancellationToken)
 			{
+				request.Image.Id = Guid.NewGuid();
+				
 				_dbContext.StockImages.Add(request.Image);
 				await _dbContext.SaveChangesAsync();
 
 				return new Response
 				{
-					Success = true
+					HasSucceeded = true,
+                    Message = "Image saved!"
 				};
 			}
 		}

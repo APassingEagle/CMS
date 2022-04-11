@@ -1,6 +1,8 @@
 import { EventEmitter } from "events";
 import ActionDispatcher from "../dispatchers/actionDispatcher";
 import StockConstants from "../constants/StockConstants";
+import ImageConstants from "../constants/ImageConstants";
+import AccessoryConstants from "../constants/AccessoryConstants";
 
 let _pageCount = 1;
 let _currentPage = 1;
@@ -19,8 +21,6 @@ class StockStore extends EventEmitter {
 		ActionDispatcher.register(this.dispatcherCallBack.bind(this));
 	}
 
-	addChangeListener = (callback) => this.addListener("change", callback);
-
 	removeChangeListener = (callback) => this.removeListener("change", callback);
 
 	removeEventListener = (event, callback) => this.removeListener(event, callback);
@@ -32,7 +32,7 @@ class StockStore extends EventEmitter {
 		}
 	};
 
-	emitChange = () => this.emit("change");
+	isSaveSuccessful = () => _isSaveSuccessful;
 
 	getCurrentPage = () => _currentPage;
 	getPageCount = () => _pageCount;
@@ -72,9 +72,29 @@ class StockStore extends EventEmitter {
 
 				this.emit("updateStock");
 				break;
-				
+
 			case StockConstants._.DELETE_STOCK:
 				this.emit("deleteStock")
+				break;
+
+			case ImageConstants._.CREATE_IMAGE:
+				_isSaveSuccessful = payload.hasSucceeded;
+				_saveMessage = payload.saveMessage;
+
+				this.emit("createImage")
+				break;
+			case ImageConstants._.DELETE_IMAGE:
+				this.emit("deleteImage")
+				break;
+
+			case AccessoryConstants._.CREATE_ACCESSORY:
+				_isSaveSuccessful = payload.hasSucceeded;
+				_saveMessage = payload.saveMessage;
+
+				this.emit("createAccessory")
+				break;
+			case AccessoryConstants._.DELETE_ACCESSORY:
+				this.emit("deleteAccessory")
 		}
 	}
 }

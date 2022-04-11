@@ -7,7 +7,7 @@ namespace CMS.Features.Models.Stock
         public Guid Id { get; set; }
         public int? StockItemId { get; set; }
         public string ImageName { get; set; }
-        public byte[] ImageBinary { get; set; }
+        public string ImageBinary { get; set; }
 
         public virtual StockItem StockItem { get; set; }
     }

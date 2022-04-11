@@ -13,7 +13,7 @@ namespace CMS.Features.Stock
 {
 	public class CreateAccessory
 	{
-		public class Query : IRequest<Response>
+		public class Command : IRequest<Response>
 		{
             public StockAccessory StockAccessory { get; set; }
         }
@@ -23,10 +23,9 @@ namespace CMS.Features.Stock
 			public bool Success { get; set; }
 		}
 
-		public class QueryHandler : IRequestHandler<Query, Response>
+		public class QueryHandler : IRequestHandler<Command, Response>
 		{
 			private readonly CMSContext _dbContext;
-			private const int PageSize = 5;
 
 			public QueryHandler(
 				CMSContext dbContext)
@@ -34,7 +33,7 @@ namespace CMS.Features.Stock
 				_dbContext = dbContext;
 			}
 
-			public async Task<Response> Handle(Query request, CancellationToken cancellationToken)
+			public async Task<Response> Handle(Command request, CancellationToken cancellationToken)
 			{
 				_dbContext.StockAccessories.Add(request.StockAccessory);
 				await _dbContext.SaveChangesAsync();

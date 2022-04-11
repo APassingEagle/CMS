@@ -23,15 +23,16 @@ export default class CreateStockModal extends React.Component {
 
         this.state = {
             ShowModal: false,
+            IsSaveSuccessful: false,
 
             Make: "",
             Model: "",
-            ModelYear: "",
-            CurrentKilometerReading: "",
+            ModelYear: 0,
+            CurrentKilometerReading: 0,
             Colour: "",
             VIN: "",
-            RetailPrice: "",
-            CostPrice: ""
+            RetailPrice: 0,
+            CostPrice: 0
         };
 
         this.addNewStockRef = React.createRef();
@@ -102,18 +103,18 @@ export default class CreateStockModal extends React.Component {
                         <Grid item xs={6}>
                             <FormControl>
                                 <TextField label="Retail Price"
-                                    type='number'
                                     name='RetailPrice'
-                                    onBlur={this.handleTextChange.bind(this)}
+                                    value={this.state.RetailPrice}
+                                    onChange={this.onNumberChange.bind(this)}
                                 />
                             </FormControl>
                         </Grid>
                         <Grid item xs={6}>
                             <FormControl>
                                 <TextField label="Cost Price"
-                                    type='number'
                                     name='CostPrice'
-                                    onBlur={this.handleTextChange.bind(this)} />
+                                    value={this.state.CostPrice}
+                                    onChange={this.onNumberChange.bind(this)} />
                             </FormControl>
                         </Grid>
                     </Grid>
@@ -127,7 +128,6 @@ export default class CreateStockModal extends React.Component {
     }
 
     createStock = () => {
-
         const stockItem = {
             ["StockItem.Make"]: this.state.Make,
             ["StockItem.Model"]: this.state.Model,
@@ -140,12 +140,10 @@ export default class CreateStockModal extends React.Component {
         };
 
         action.createStock(stockItem);
-
-        // this.closeModal();
     };
 
     showModal = () => {
-        store.addEventListener("createStock", this._onLoad.bind(this));
+        store.addEventListener("createStock", this._onRecordSave.bind(this));
 
         this.setState({
             ShowModal: true
@@ -155,10 +153,26 @@ export default class CreateStockModal extends React.Component {
     closeModal = () => {
         store.removeEventListener("createStock", this._onRecordSave.bind(this));
 
+		this.props.onSave(this.state.IsSaveSuccessful);
+
         this.setState({
             ShowModal: false
         })
     }
+
+    onNumberChange = (e) => {
+		const reg = /^[0-9,]{1,100}$/
+
+		if (e.target.value === '' || reg.test(e.target.value)) {
+			this.setState({
+				[e.target.name]: e.target.value,
+			});
+		}
+		else {
+			e.preventDefault();
+		}
+		
+	}
 
     handleTextChange(e) {
         this.setState({
@@ -167,10 +181,19 @@ export default class CreateStockModal extends React.Component {
     }
 
     _onRecordSave = () => {
+		this.setState({
+			IsSaveSuccessful: store.isSaveSuccessful(),
 
-    }
+            Make: "",
+            Model: "",
+            ModelYear: 0,
+            CurrentKilometerReading: 0,
+            Colour: "",
+            VIN: "",
+            RetailPrice: 0,
+            CostPrice: 0
+		});
 
-    _onLoad = () => {
-
-    };
+        this.closeModal();
+	}
 }

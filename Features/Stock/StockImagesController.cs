@@ -23,25 +23,20 @@ namespace CMS.Features.Stock
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateImage(StockImage image)
+        public async Task<IActionResult> CreateImage(CreateImage.Command command)
         {
-            var result = await _mediator.Send(image);
-            return Json("Success");
+            var result = await _mediator.Send(command);
+            return Json(result);
         }
 
+        [HttpDelete]
         public async Task<IActionResult> DeleteImage(Guid? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
             var image = await _context.StockImages
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (image == null)
-            {
-                return NotFound();
-            }
+
+            _context.StockImages.Remove(image);
+            await _context.SaveChangesAsync();
 
             return Json("Success");
         }

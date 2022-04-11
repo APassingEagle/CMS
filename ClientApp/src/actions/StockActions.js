@@ -1,6 +1,8 @@
 import StockConstants from "../constants/StockConstants";
 import api from "../apis/StockApi";
 import Dispatcher from "../dispatchers/actionDispatcher";
+import ImageConstants from "../constants/ImageConstants";
+import AccessoryConstants from "../constants/AccessoryConstants";
 
 class StockActions {
 	
@@ -21,7 +23,9 @@ class StockActions {
 		api.createStock(stockItem).then((response) => {
 
 			Dispatcher.dispatch({
-				actionType: StockConstants._.CREATE_STOCK
+				actionType: StockConstants._.CREATE_STOCK,
+				hasSucceeded: response.hasSucceeded,
+				saveMessage: response.message
 			});
 		});
 	}
@@ -31,7 +35,7 @@ class StockActions {
 
 			Dispatcher.dispatch({
 				actionType: StockConstants._.VIEW_STOCK,
-				record: response.item
+				record: response
 			});
 		});
 	}
@@ -54,6 +58,50 @@ class StockActions {
 				actionType: StockConstants._.DELETE_STOCK,
 				hasSucceeded: response.hasSucceeded,
 				saveMessage: response.message
+			});
+		});
+	}
+
+	createImage(record) {
+
+		api.createImage(record).then((response) => {
+
+			Dispatcher.dispatch({
+				actionType: ImageConstants._.CREATE_IMAGE,
+				hasSucceeded: response.HasSucceeded,
+				saveMessage: response.Message
+			});
+		});
+	}
+	deleteImage(id) {
+
+		api.deleteImage(id).then((response) => {
+
+			Dispatcher.dispatch({
+				actionType: ImageConstants._.DELETE_IMAGE,
+				hasSucceeded: response.HasSucceeded,
+				saveMessage: response.Message
+			});
+		});
+	}
+
+	createAccessory(record) {
+
+		api.createAccessory(record).then((response) => {
+
+			Dispatcher.dispatch({
+				actionType: AccessoryConstants._.CREATE_ACCESSORY
+			});
+		});
+	}
+	deleteAccessory(id) {
+
+		api.deleteAccessory(id).then((response) => {
+
+			Dispatcher.dispatch({
+				actionType: AccessoryConstants._.DELETE_ACCESSORY,
+				hasSucceeded: response.HasSucceeded,
+				saveMessage: response.Message
 			});
 		});
 	}

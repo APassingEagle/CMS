@@ -29,111 +29,41 @@ namespace CMS.Features.Stock
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(Create.Command stockItem)
+        public async Task<IActionResult> Create(CreateItem.Command command)
         {
-            var result = await _mediator.Send(stockItem);
-            return Json("Success");
+            var result = await _mediator.Send(command);
+            return Json(result);
         }
 
-        // GET: StockItems/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> View(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
             var stockItem = await _context.StockItems
+                .Include(x => x.StockImages)
+                .Include(x => x.StockAccessories)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (stockItem == null)
-            {
-                return NotFound();
-            }
 
-            return View(stockItem);
+            return Json(stockItem);
         }
 
-        // GET: StockItems/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        [HttpPut]
+        public async Task<IActionResult> Update(Update.Command command)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var stockItem = await _context.StockItems.FindAsync(id);
-            if (stockItem == null)
-            {
-                return NotFound();
-            }
-            return View(stockItem);
+            var result = await _mediator.Send(command);
+            return Json(result);
         }
 
-        // POST: StockItems/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, StockItem stockItem)
+        [HttpDelete]
+        public async Task<IActionResult> Delete(int id)
         {
-            if (id != stockItem.Id)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(stockItem);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!StockItemExists(stockItem.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            return View(stockItem);
-        }
-
-        // GET: StockItems/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
             var stockItem = await _context.StockItems
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (stockItem == null)
-            {
-                return NotFound();
-            }
+                .Include(x => x.StockImages)
+                .Include(x => x.StockAccessories)
+                .FirstOrDefaultAsync(x => x.Id == id);
 
-            return View(stockItem);
-        }
-
-        // POST: StockItems/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var stockItem = await _context.StockItems.FindAsync(id);
             _context.StockItems.Remove(stockItem);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
 
-        private bool StockItemExists(int id)
-        {
-            return _context.StockItems.Any(e => e.Id == id);
+            await _context.SaveChangesAsync();
+            return Json("Successfully deleted");
         }
     }
 }

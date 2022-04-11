@@ -28,6 +28,7 @@ class ImageStore extends EventEmitter {
 		}
 	};
 
+	isSaveSuccessful = () => _isSaveSuccessful;
 	emitChange = () => this.emit("change");
 	getRecord = () => _record;
 

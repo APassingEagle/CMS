@@ -6,7 +6,7 @@ class StockApi {
 
 		return new Promise(function (resolve, reject) {
 			api.get({
-				url: '/StockItems/FetchStock/',
+				url: `/StockItems/FetchStock/`,
                 data: pageData
 			}).then((result) => resolve(result));
 		});
@@ -47,9 +47,8 @@ class StockApi {
 		
 		return new Promise(function (resolve, reject) {
 
-			api.put({
-				url: `/StockItems/Delete${id}`,
-				data: record
+			api.delete({
+				url: `/StockItems/Delete/${id}`
 			})
 			.then((result) => resolve(result));
 		});
@@ -69,7 +68,7 @@ class StockApi {
 	deleteImage = (id) => {
 		return new Promise(function (resolve, reject) {
 
-			api.post({
+			api.delete({
 				url: `/StockImages/DeleteImage/${id}`
 			})
 			.then((result) => resolve(result));
@@ -89,7 +88,7 @@ class StockApi {
 	deleteAccessory = (id) => {
 		return new Promise(function (resolve, reject) {
 
-			api.post({
+			api.delete({
 				url: `/StockAccessories/DeleteAccessory/${id}`
 			})
 			.then((result) => resolve(result));
